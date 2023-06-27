@@ -1,0 +1,23 @@
+# Collaborative filtering recommender system using matrix factorization
+
+import numpy as np
+
+class RecommenderSystem:
+    def __init__(self, num_users, num_items, latent_dim):
+        self.num_users = num_users
+        self.num_items = num_items
+        self.latent_dim = latent_dim
+        self.user_embeddings = np.random.rand(num_users, latent_dim)
+        self.item_embeddings = np.random.rand(num_items, latent_dim)
+
+    def fit(self, ratings, num_epochs, learning_rate):
+        for epoch in range(num_epochs):
+            for user, item, rating in ratings:
+                error = rating - np.dot(self.user_embeddings[user], self.item_embeddings[item])
+                user_gradient = -2 * error * self.item_embeddings[item]
+                item_gradient = -2 * error * self.user_embeddings[user]
+                self.user_embeddings[user] -= learning_rate * user_gradient
+                self.item_embeddings[item] -= learning_rate * item_gradient
+
+    def predict(self, user):
+        return
